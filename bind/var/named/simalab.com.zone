@@ -1,0 +1,12 @@
+$TTL    86400
+@       IN      SOA    mx-ns.simalab.com.  root.simalab.com.(
+                                      2016031601 ; Serial
+                                      28800      ; Refresh
+                                      14400      ; Retry
+                                      3600000    ; Expire
+                                      86400 )    ; Minimum
+                        IN NS     mx-ns.simalab.com.
+                        IN MX 10  mx-ns.simalab.com.
+mx-ns          	IN  A      	192.168.3.21
+msa		IN  CNAME	mx-ns
+simalab.com. 	IN  TXT 	"v=spf1 +ip4:192.168.3.21 ~all"
