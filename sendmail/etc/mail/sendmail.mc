@@ -182,18 +182,11 @@ dnl MAILER(cyrusv2)dnl
 
 LOCAL_CONFIG
 
-######################################################################
-## Subject: check config.
-######################################################################
 F{PartSubjects} -o /etc/mail/subjects_rejects
 HSubject:       $>CheckSubject
 
-
 LOCAL_RULESETS
 
-######################################################################
-## Subject: check ruleset section.
-######################################################################
 SCheckSubject
 R$* $={PartSubjects} $* $: REJECTSUBJECT
 R$* REJECTSUBJECT $*    $#error $: "553 Rejected , indicates spam Caused by Subject:"
@@ -204,17 +197,37 @@ R$* REJECTSUBJECT $*    $#error $: "553 Rejected , indicates spam Caused by Subj
 
 LOCAL_CONFIG
 
-######################################################################
-## From: (heder from)check config.
-######################################################################
 F{PartFrom} -o /etc/mail/from_rejects
 HFrom:       $>CheckFrom
 
 LOCAL_RULESETS
 
-######################################################################
-## From: (heder from)check section.
-######################################################################
 SCheckFrom
 R$* $={PartFrom} $*     $: REJECTFROM
 R$* REJECTFROM $*       $#error $: "553 Rejected , indicates spam.Caused by from: header."
+
+######################################################################
+## 2016.03.28 AddSection. (logging syslog for output Subject:)
+######################################################################
+
+LOCAL_CONFIG
+Ksyslog syslog
+
+LOCAL_RULESETS
+HSubject: $>+log_subject
+
+Slog_subject
+R$*     $: $(syslog "Subject: " $1 $)
+
+######################################################################
+## 2016.04.01 AddSection. (logging syslog for output From: header)
+######################################################################
+
+LOCAL_CONFIG
+Ksyslog syslog
+
+LOCAL_RULESETS
+HFrom: $>+log_from
+
+Slog_from
+R$*     $: $(syslog "From: " $1 $)
